@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  app:
+    build: ./docker
+    volumes:
+      - .:/var/www/double-entry
+      - ./docker/php.ini:/usr/local/etc/php/php.ini
