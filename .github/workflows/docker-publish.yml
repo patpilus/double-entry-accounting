@@ -29,5 +29,6 @@ jobs:
       - name: Run tests
         run: |
             docker-compose build
+            composer install
             docker-compose run app vendor/bin/phpunit
             
