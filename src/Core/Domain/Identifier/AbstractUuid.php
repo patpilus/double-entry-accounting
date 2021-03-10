@@ -8,7 +8,7 @@ use App\Core\Domain\Exception\InvalidUuid;
 use JsonSerializable;
 use Ramsey\Uuid\Uuid;
 
-abstract class AbstractUuid implements Identifier, JsonSerializable
+abstract class AbstractUuid implements AggregateId, JsonSerializable
 {
     /**
      * @var string
@@ -26,7 +26,7 @@ abstract class AbstractUuid implements Identifier, JsonSerializable
     /**
      * @return static
      */
-    public static function generateNew(): Identifier
+    public static function generate(): AggregateId
     {
         return new static((string) Uuid::uuid4());
     }
@@ -34,7 +34,7 @@ abstract class AbstractUuid implements Identifier, JsonSerializable
     /**
      * @return static
      */
-    public static function fromString(string $id): Identifier
+    public static function fromString(string $id): AggregateId
     {
         return new static($id);
     }
@@ -44,7 +44,7 @@ abstract class AbstractUuid implements Identifier, JsonSerializable
         return $this->id;
     }
 
-    public function isEqualWith(Identifier $id): bool
+    public function isEqualWith(AggregateId $id): bool
     {
         return (string) $id === $this->id;
     }

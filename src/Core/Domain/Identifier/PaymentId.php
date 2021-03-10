@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace App\Core\Domain\Identifier;
 
-class AccountId extends AbstractUuid
+class PaymentId extends AbstractUuid
 {
 }
