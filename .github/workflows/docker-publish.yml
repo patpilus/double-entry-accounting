@@ -28,7 +28,6 @@ jobs:
 
       - name: Run tests
         run: |
-          if [ -f docker-compose.yml ]; then
             docker-compose build
             docker-compose run vendor/bin/phpunit
             
