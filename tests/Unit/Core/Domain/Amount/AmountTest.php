@@ -45,4 +45,40 @@ class AmountTest extends TestCase
 
         self::assertSame('-100.00', $amount->value());
     }
+
+    public function testAllowsToPerformSubtractionOperation(): void
+    {
+        $amount = Amount::fromFloat('1432.12');
+        $amount = $amount->subtract(Amount::fromString('1432.15'));
+
+        self::assertSame('-0.03', $amount->value());
+    }
+
+    public function testAllowsToCheckWhetherTheValueIsLessThanGivenOne(): void
+    {
+        $amount = Amount::fromString('1524.9755');
+
+        self::assertFalse($amount->isLessThan(Amount::fromString('1524.9755'), 4));
+        self::assertTrue($amount->isLessThan(Amount::fromString('1524.9756'), 4));
+        self::assertTrue($amount->isLessThan(Amount::fromString('8457694'), 4));
+    }
+
+    public function testAllowsToCheckWhetherTheValueIsEqualWithGivenOne(): void
+    {
+        $amount = Amount::fromString('1524.9755');
+
+        self::assertTrue($amount->isEqualWith(Amount::fromString('1524.9755'), 4));
+        self::assertTrue($amount->isEqualWith(Amount::fromString('1524.98'), 2));
+        self::assertFalse($amount->isEqualWith(Amount::fromString('1524.9756'), 4));
+        self::assertFalse($amount->isEqualWith(Amount::fromString('8457694'), 4));
+    }
+
+    public function testAllowsToCheckWhetherTheValueIsGreaterThanGivenOne(): void
+    {
+        $amount = Amount::fromString('1524.9755');
+
+        self::assertFalse($amount->isGreaterThan(Amount::fromString('1524.9755'), 4));
+        self::assertTrue($amount->isGreaterThan(Amount::fromString('1524.9754'), 4));
+        self::assertFalse($amount->isGreaterThan(Amount::fromString('8457694'), 4));
+    }
 }
