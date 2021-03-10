@@ -1,6 +1,9 @@
 # Double-entry accounting - domain model approach
 
-To build application:
+
+## Build application
+
+To build application please execute:
 ```shell script
 docker-compose build
 ```
@@ -16,6 +19,12 @@ composer install
 ```
 
 ## Launching tests
+
+Inside docker `app` container:
 ```shell script
-vendor/bin/phpspec run
+composer test
+```
+or
+```shell script
+vendor/bin/phpunit
 ```
