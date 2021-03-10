@@ -6,7 +6,7 @@ namespace App\Core\Domain\Amount;
 
 use App\Core\Domain\Amount;
 use App\Core\Domain\Exception\NegativeScale;
-use App\Core\Domain\Exception\NotNumericArgument;
+use App\Core\Domain\Exception\NonNumericArgument;
 use JsonSerializable;
 
 abstract class AbstractAmount implements Amount, JsonSerializable
@@ -46,16 +46,16 @@ abstract class AbstractAmount implements Amount, JsonSerializable
     }
 
     /**
-     * @throws NotNumericArgument
+     * @throws NonNumericArgument
      */
     protected function guardNumericOnlyArgument(string $argument): void
     {
         if (!is_numeric($argument)) {
-            throw new NotNumericArgument($argument);
+            throw new NonNumericArgument($argument);
         }
     }
 
-    protected function guardNotNegativeScale(int $scale): void
+    protected function guardNonNegativeScale(int $scale): void
     {
         if ($scale < 0) {
             throw new NegativeScale($scale);

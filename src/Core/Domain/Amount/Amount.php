@@ -20,35 +20,32 @@ final class Amount extends AbstractAmount
 
     public function add(AmountInterface $amount, int $scale = 2): AmountInterface
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
         return (new self(bcadd($this->value, (string) $amount, $scale + 1)))->mathRound($scale);
     }
 
     public function subtract(AmountInterface $amount, int $scale = 2): AmountInterface
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
         return (new self(bcsub($this->value, (string) $amount, $scale + 1)))->mathRound($scale);
     }
 
     public function mathRound(int $scale = 2): AmountInterface
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
-        $sign = '';
-        if (bccomp('0', $this->value, 64) === '1') {
-            $sign = '-';
+        if ($this->value[0] != '-') {
+            return new self(bcadd($this->value, '0.' . str_repeat('0', $scale) . '5', $scale));
         }
 
-        $increment = sprintf('%s0.%s%s', $sign, str_repeat('0', $scale), '5');
-
-        return new self(bcadd($this->value, $increment, $scale));
+        return new self(bcsub($this->value, '0.' . str_repeat('0', $scale) . '5', $scale));
     }
 
     public function isGreaterThan(AmountInterface $amountToCompare, int $scale): bool
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
         return bccomp(
             (string) self::fromString($this->value)->mathRound($scale),
@@ -58,7 +55,7 @@ final class Amount extends AbstractAmount
 
     public function isLessThan(AmountInterface $amountToCompare, int $scale): bool
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
         return bccomp(
             (string) self::fromString($this->value)->mathRound($scale),
@@ -68,7 +65,7 @@ final class Amount extends AbstractAmount
 
     public function isEqualWith(AmountInterface $amountToCompare, int $scale): bool
     {
-        $this->guardNotNegativeScale($scale);
+        $this->guardNonNegativeScale($scale);
 
         return bccomp(
             (string) self::fromString($this->value)->mathRound($scale),
