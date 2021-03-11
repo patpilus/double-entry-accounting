@@ -72,6 +72,6 @@ class Account
 
         if ($balanceAfterPayment->isLessThan(AmountInterface\Amount::fromFloat(0), 2)) {
             throw new NegativeBalance($this->id, $payment->getId(), $payment->getAmount());
-        };
+        }
     }
 }

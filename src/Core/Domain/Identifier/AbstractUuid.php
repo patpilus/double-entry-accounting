@@ -10,10 +10,7 @@ use Ramsey\Uuid\Uuid;
 
 abstract class AbstractUuid implements AggregateId, JsonSerializable
 {
-    /**
-     * @var string
-     */
-    private $id;
+    private string $id;
 
     protected function __construct(string $id)
     {
