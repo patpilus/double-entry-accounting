@@ -54,7 +54,6 @@ class TransactionTest extends TestCase
         $clientAccountId = AccountId::generate();
         $tPayAccountId = AccountId::generate();
         $sellerAccountId = AccountId::generate();
-        $bankAccountId = AccountId::generate();
 
         return new Payments(
             new Payment(PaymentId::generate(), $clientAccountId, $this->transactionId, Amount::fromString('-100')),

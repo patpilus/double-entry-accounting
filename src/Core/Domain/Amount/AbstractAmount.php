@@ -11,10 +11,7 @@ use JsonSerializable;
 
 abstract class AbstractAmount implements Amount, JsonSerializable
 {
-    /**
-     * @var string
-     */
-    protected $value;
+    protected string $value;
 
     protected function __construct(string $value)
     {
