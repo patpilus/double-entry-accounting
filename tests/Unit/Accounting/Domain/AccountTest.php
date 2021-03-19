@@ -12,6 +12,22 @@ use PHPUnit\Framework\TestCase;
 
 class AccountTest extends TestCase
 {
+    public function testAggregatingCurrentBalanceDoesNotAffectItsValue(): void
+    {
+        $account = new Account(AccountId::generate(), 'Sprzedawca', false);
+        $account->registerPayment(
+            new Payment(PaymentId::generate(), $account->getId(), TransactionId::generate(), Amount::fromString('100'))
+        );
+        $account->registerPayment(
+            new Payment(PaymentId::generate(), $account->getId(), TransactionId::generate(), Amount::fromString('50.25'))
+        );
+
+        self::assertSame('150.25', $account->getCurrentBalance()->value());
+
+        $account->aggregateCurrentBalance();
+        self::assertSame('150.25', $account->getCurrentBalance()->value());
+    }
+
     public function testFailsToHaveNegativeBalanceForNonDebitAccount(): void
     {
         $account = new Account(AccountId::generate(), 'Sprzedawca', false);

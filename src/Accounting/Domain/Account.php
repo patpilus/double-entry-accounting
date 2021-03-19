@@ -14,6 +14,7 @@ class Account
     private AccountId $id;
     private string $name;
     private AmountInterface $currentBalance;
+    private DateTimeImmutable $currentBalanceUpdatedAt;
     private Payments $payments;
     private DateTimeImmutable $createdAt;
     private DateTimeImmutable $updatedAt;
@@ -28,17 +29,24 @@ class Account
         $this->isDebitAllowed = $isDebitAllowed;
 
         $this->createdAt = new DateTimeImmutable();
+        $this->currentBalanceUpdatedAt = new DateTimeImmutable();
         $this->updatedAt = $this->createdAt;
     }
 
     public function registerPayment(Payment $payment): void
     {
         $this->guardBalance($payment);
-
         $this->payments->addPayment($payment);
-        $this->currentBalance = $this->currentBalance->add($payment->getAmount());
 
         $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function aggregateCurrentBalance(): void
+    {
+        foreach ($this->payments->getLaterThan($this->currentBalanceUpdatedAt) as $payment) {
+            $this->currentBalance = $this->currentBalance->add($payment->getAmount());
+            $this->currentBalanceUpdatedAt = $payment->getCreatedAt();
+        }
     }
 
     public function getId(): AccountId
@@ -48,7 +56,13 @@ class Account
 
     public function getCurrentBalance(): AmountInterface
     {
-        return $this->currentBalance;
+        $currentBalance = $this->currentBalance;
+
+        foreach ($this->payments->getLaterThan($this->currentBalanceUpdatedAt) as $payment) {
+            $currentBalance = $currentBalance->add($payment->getAmount());
+        }
+
+        return $currentBalance;
     }
 
     public function getBalanceAsOf(DateTimeImmutable $date): AmountInterface
@@ -68,7 +82,7 @@ class Account
             return;
         }
 
-        $balanceAfterPayment = $this->currentBalance->add($payment->getAmount());
+        $balanceAfterPayment = $this->getCurrentBalance()->add($payment->getAmount());
 
         if ($balanceAfterPayment->isLessThan(AmountInterface\Amount::fromFloat(0), 2)) {
             throw new NegativeBalance($this->id, $payment->getId(), $payment->getAmount());
