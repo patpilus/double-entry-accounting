@@ -9,12 +9,14 @@ use App\Core\Domain\Amount\Amount;
 use Countable;
 use DateTimeImmutable;
 
+use function array_filter;
+
 class Payments implements Countable
 {
     /**
      * @var Payment[]
      */
-    private array $payments;
+    private array $payments = [];
     private AmountInterface $balance;
 
     public function __construct(Payment ...$payments)
@@ -38,6 +40,16 @@ class Payments implements Countable
     {
         return array_filter($this->payments, function (Payment $payment) use ($date): bool {
             return $payment->getCreatedAt() <= $date;
+        });
+    }
+
+    /**
+     * @return Payment[]
+     */
+    public function getLaterThan(DateTimeImmutable $date): array
+    {
+        return array_filter($this->payments, function (Payment $payment) use ($date): bool {
+            return $payment->getCreatedAt() > $date;
         });
     }
 
