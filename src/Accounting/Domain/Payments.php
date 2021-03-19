@@ -59,7 +59,7 @@ class Payments implements Countable
     }
 
     /**
-     * @return  Payment[]
+     * @return Payment[]
      */
     public function getPayments(): array
     {
