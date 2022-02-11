@@ -35,16 +35,16 @@ class TransactionTest extends TestCase
     private function getValidTransactionPayments(): Payments
     {
         $clientAccountId = AccountId::generate();
-        $tPayAccountId = AccountId::generate();
+        $providerAccountId = AccountId::generate();
         $sellerAccountId = AccountId::generate();
         $bankAccountId = AccountId::generate();
 
         return new Payments(
             new Payment(PaymentId::generate(), $clientAccountId, $this->transactionId, Amount::fromString('-100')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('100')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('-99')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('100')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('-99')),
             new Payment(PaymentId::generate(), $sellerAccountId, $this->transactionId, Amount::fromString('99')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('-0.5')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('-0.5')),
             new Payment(PaymentId::generate(), $bankAccountId, $this->transactionId, Amount::fromString('0.5'))
         );
     }
@@ -52,15 +52,15 @@ class TransactionTest extends TestCase
     private function getInvalidTransactionPayments(): Payments
     {
         $clientAccountId = AccountId::generate();
-        $tPayAccountId = AccountId::generate();
+        $providerAccountId = AccountId::generate();
         $sellerAccountId = AccountId::generate();
 
         return new Payments(
             new Payment(PaymentId::generate(), $clientAccountId, $this->transactionId, Amount::fromString('-100')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('100')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('-99')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('100')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('-99')),
             new Payment(PaymentId::generate(), $sellerAccountId, $this->transactionId, Amount::fromString('99')),
-            new Payment(PaymentId::generate(), $tPayAccountId, $this->transactionId, Amount::fromString('-0.5')),
+            new Payment(PaymentId::generate(), $providerAccountId, $this->transactionId, Amount::fromString('-0.5')),
         );
     }
 }

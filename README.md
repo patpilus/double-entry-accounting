@@ -8,6 +8,11 @@ To build application please execute:
 docker-compose build
 ```
 
+To launch the application stack: 
+```shell script
+docker-compose up -d
+```
+
 To start application bash: 
 ```shell script
 docker-compose exec app bash
