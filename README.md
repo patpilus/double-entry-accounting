@@ -1,4 +1,4 @@
-# Double-entry accounting example
+# Double-entry accounting - domain model approach
 
 To build application:
 ```shell script
